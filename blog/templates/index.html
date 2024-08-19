@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>DIY Mini Blog Home</h1>
+  <p>
+    Welcome to DIY Mini Blog, a website developed as an assessment example on the
+    <em>Mozilla Developer Network</em>!
+  </p>
+  <h2>Dynamic content</h2>
+  <p>The blog site has the following record counts:</p>
+  <ul>
+    <li><strong>Blogs:</strong> {{ num_blogs }}</li>
+    <li><strong>Bloggers:</strong> {{ num_authors }}</li>
+    <li><strong>Blog Comments:</strong> {{ num_comments }}</li>
+  </ul>
+{% endblock %}
