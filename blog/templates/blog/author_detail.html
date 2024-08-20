@@ -1,0 +1,20 @@
+{% extends "base_generic.html" %} 
+{% block content %}
+    <h1>Blogger: {{ author.name }}</h1>
+    <h3>Bio</h3>
+    <p>{{ author.bio }}</p>
+    <h3>Blogs list</h3>
+    {% if author.blog_set.all %}
+        <ul>
+          {% for blog in author.blog_set.all %}
+          <li>
+            <p>
+                <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> ({{blog.post_date}})
+            </p>
+          </li>
+          {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no blogs from this blogger in the library.</p>
+    {% endif %}
+{% endblock %}

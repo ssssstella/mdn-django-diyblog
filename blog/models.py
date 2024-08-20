@@ -43,7 +43,7 @@ class BlogComment(models.Model):
     post_datetime = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-post_datetime']
+        ordering = ['post_datetime']
 
     def __str__(self):
         """String for representing the Model object."""

@@ -22,8 +22,13 @@ from django.views import generic
 
 class BlogListView(generic.ListView):
     model = Blog
+    paginate_by = 5
 
 class BlogDetailView(generic.DetailView):
     model = Blog
 
+class AuthorListView(generic.ListView):
+    model = Author
 
+class AuthorDetailView(generic.DetailView):
+    model = Author
