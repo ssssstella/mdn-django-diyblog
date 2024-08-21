@@ -6,7 +6,7 @@ from .models import Author, Blog, BlogComment
 admin.site.register(Author)
 
 class BlogCommentAdmin(admin.ModelAdmin):
-    list_display = ('display_comment_name', 'username', 'post_datetime', 'id')
+    list_display = ('display_comment_name', 'user', 'post_datetime', 'id')
 
     def display_comment_name(self, obj):
         """Create a comment name truncating the comment description to 75 characters."""

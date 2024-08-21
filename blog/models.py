@@ -1,9 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from django.db.models import UniqueConstraint
-from django.db.models.functions import Lower
-import datetime
+from django.utils import timezone
 
 class Blog(models.Model):
     """Model representing a blog post."""
@@ -15,7 +13,7 @@ class Blog(models.Model):
     description = models.TextField(
         max_length=5000, help_text="Enter the description of the blog post")
     
-    post_date = models.DateField(default=datetime.date.today())
+    post_date = models.DateField(default=timezone.now)
 
     class Meta:
         ordering = ['-post_date']
@@ -29,18 +27,18 @@ class Blog(models.Model):
         return reverse('blog-detail', args=[str(self.id)])
 
 import uuid # Required for unique book instances
-
+from django.contrib.auth.models import User
 class BlogComment(models.Model):
 
     """Model representing a specific comment of a blog."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                           help_text="Unique ID for this particular comment")
-    username = models.CharField(max_length=100)
-    blog = models.ForeignKey('blog', on_delete=models.RESTRICT, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    blog = models.ForeignKey(Blog, on_delete=models.RESTRICT, null=True)
     description = models.TextField(
         max_length=1000, help_text="Enter comment about blog here.")
     
-    post_datetime = models.DateTimeField(auto_now=True)
+    post_datetime = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['post_datetime']
@@ -62,5 +60,4 @@ class Author(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a particular author instance."""
         return reverse('author-detail', args=[str(self.id)])
-
 

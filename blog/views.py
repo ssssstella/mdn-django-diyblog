@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 
 # Create your views here.
@@ -32,3 +33,31 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import CreateView
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+
+class BlogCommentCreateView(LoginRequiredMixin, CreateView):
+    model = BlogComment
+    fields = ["description"]
+
+    def form_valid(self, form):
+        """
+        Add author and associated blog to form data before setting it as valid (so it is saved to model)
+        """
+        #Add logged-in user as author of comment
+        form.instance.user = self.request.user
+        #Associate comment with blog based on passed id
+        form.instance.blog = get_object_or_404(Blog, pk=self.kwargs['pk'])
+        self.success_url = reverse('blog-detail', kwargs={'pk': self.kwargs['pk']})
+        return super(BlogCommentCreateView, self).form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(BlogCommentCreateView, self).get_context_data(**kwargs)
+        # Get the blogger object from the "pk" URL parameter and add it to the context
+        context['blog'] = get_object_or_404(Blog, pk=self.kwargs['pk'])
+        return context

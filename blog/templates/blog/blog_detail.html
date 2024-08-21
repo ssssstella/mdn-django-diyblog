@@ -3,9 +3,7 @@
 {% block content %}
   <h1>{{ blog.title }}</h1>
   <p><strong>Post date:</strong> {{ blog.post_date }}</p>
-  <p><strong>Author:</strong> <a href="">{{ blog.author }}</a></p>
-  {% comment %} <p><strong>Author:</strong> <a href="blog.author.get_absolute_url">{{ blog.author }}</a></p> {% endcomment %}
-  {% comment %} add author link {% endcomment %}
+  <p><strong>Author:</strong> <a href="{{ blog.author.get_absolute_url }}">{{ blog.author }}</a></p>
   <p><strong>Description:</strong></p>
   <p>{{ blog.description|linebreaks }}</p>
   
@@ -15,11 +13,14 @@
     {% for comment in blog.blogcomment_set.all %}
       <hr />
       <p>
-        {{ comment.username }} ({{ comment.post_datetime }}) - {{ comment.description }}
+        {{ comment.user }} ({{ comment.post_datetime }}) - {{ comment.description }}
       </p>
     {% endfor %}
     <hr />
-    <p><a href="">Add a new comment</a></p>
-    {% comment %} add comment create link {% endcomment %}
+    {% if user.is_authenticated %}
+      <p><a href="{% url 'create-comment-user' blog.id %}">Add a new comment</a></p>
+    {% else %}
+      <p><a href="{% url 'login' %}?next={{ request.path }}">Add a new comment</a></p>
+    {% endif %}
   </div>
 {% endblock %}
