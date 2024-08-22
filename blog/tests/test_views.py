@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from blog.models import Blog, Author, BlogComment
+from blog.models import Blog, Author
 
 class AuthorListViewTest(TestCase):
     @classmethod
@@ -116,9 +116,6 @@ class BlogDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/blog_detail.html')
 
-
-import datetime
-from django.utils import timezone
 # Get user model from settings
 from django.contrib.auth import get_user_model
 User = get_user_model()
